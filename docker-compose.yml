@@ -4,10 +4,6 @@ services:
     container_name: llama3-model
     ports:
       - "5000:5000"
-    volumes:
-      - ./model_server:/app
-    environment:
-      - MODEL_ID=meta-llama/Meta-Llama-3-8B-Instruct
     deploy:
       resources:
         reservations:
@@ -22,6 +18,9 @@ services:
       - "8888:8888"
     volumes:
       - ./notebooks:/home/base/work
-    environment:
-      - JUPYTER_ENABLE_LAB=yes
-    command: start-notebook.sh --NotebookApp.token=''
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia

@@ -1,0 +1,8 @@
+jupyterlab
+notebook
+requests
+numpy
+pandas
+scikit-learn
+seaborn
+ipywidgets
