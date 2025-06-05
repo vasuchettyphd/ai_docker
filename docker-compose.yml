@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  deepseek:
+    image: ghcr.io/huggingface/text-generation-inference:latest
+    ports:
+      - "8080:80"
+    environment:
+      - MODEL_ID=deepseek-ai/deepseek-llm-7b-chat
+      - PORT=80
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia
+
+  jupyter:
+    image: jupyter/base-notebook:python-3.11
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: start-notebook.sh --NotebookApp.token=''
