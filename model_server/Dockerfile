@@ -11,6 +11,6 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 COPY app.py ./
 
-RUN poetry install --only main
+RUN poetry install --only main --no-root
 
 CMD ["python3", "app.py"]
