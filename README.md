@@ -30,8 +30,6 @@ ai_docker/
 ├── jupyter/                              # Jupyter Notebook environment
 │   ├── Dockerfile                        # Builds the Jupyter container
 │   └── requirements.txt                  # Jupyter, requests, numpy, pandas, etc.
-├── notebooks/                            # Mounted notebook workspace
-│   └── llama3_client.ipynb               # Sample notebook to call the model API
 ```
 
 # ✨ Jupyter Notebook Example
