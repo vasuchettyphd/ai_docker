@@ -1,12 +1,13 @@
-version: '3.8'
 services:
-  deepseek:
-    image: ghcr.io/huggingface/text-generation-inference:latest
+  model:
+    build: ./model_server
+    container_name: llama3-model
     ports:
-      - "8080:80"
+      - "5000:5000"
+    volumes:
+      - ./model_server:/app
     environment:
-      - MODEL_ID=deepseek-ai/deepseek-llm-7b-chat
-      - PORT=80
+      - MODEL_ID=meta-llama/Meta-Llama-3-8B-Instruct
     deploy:
       resources:
         reservations:
@@ -15,11 +16,12 @@ services:
     runtime: nvidia
 
   jupyter:
-    image: jupyter/base-notebook:python-3.11
+    build: ./jupyter
+    container_name: jupyter-client
     ports:
       - "8888:8888"
     volumes:
-      - ./notebooks:/home/jovyan/work
+      - ./notebooks:/home/base/work
     environment:
       - JUPYTER_ENABLE_LAB=yes
     command: start-notebook.sh --NotebookApp.token=''
