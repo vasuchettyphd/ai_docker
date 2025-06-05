@@ -1,17 +1,19 @@
 [tool.poetry]
-name = "llama3-model-server"
+name = "llama3-notebook"
 version = "0.1.0"
-description = "Flask API for quantized LLaMA 3"
+description = "Jupyter client for LLaMA 3 inference API"
 authors = ["You <you@example.com>"]
-package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
-flask = "*"
-torch = "*"
-transformers = "*"
-accelerate = "*"
-bitsandbytes = "*"
+jupyterlab = "*"
+notebook = "*"
+requests = "*"
+numpy = "*"
+pandas = "*"
+scikit-learn = "*"
+seaborn = "*"
+ipywidgets = "*"
 
 [build-system]
 requires = ["poetry-core"]
