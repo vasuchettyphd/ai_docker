@@ -21,17 +21,17 @@ This will:
 
 # 📁 Project Structure
 ```bash
-.
-├── docker-compose.yml
-├── jupyter/
-│   ├── Dockerfile
-│   └── pyproject.toml
-├── model_server/
-│   ├── Dockerfile
-│   ├── pyproject.toml
-│   └── app.py
-└── notebooks/
-    └── llama3_client.ipynb
+ai_docker/
+├── docker-compose.yml                    # Top-level Compose config
+├── model_server/                         # LLaMA model server container
+│   ├── app.py                            # Flask app exposing the /generate endpoint
+│   ├── Dockerfile                        # Builds the model server container
+│   └── requirements.txt                  # All Python dependencies (torch, transformers, etc.)
+├── jupyter/                              # Jupyter Notebook environment
+│   ├── Dockerfile                        # Builds the Jupyter container
+│   └── requirements.txt                  # Jupyter, requests, numpy, pandas, etc.
+├── notebooks/                            # Mounted notebook workspace
+│   └── llama3_client.ipynb               # Sample notebook to call the model API
 ```
 
 # ✨ Jupyter Notebook Example

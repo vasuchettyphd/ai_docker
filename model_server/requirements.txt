@@ -1,5 +1,7 @@
+--extra-index-url https://download.pytorch.org/whl/cu121
+
 flask
-torch==2.3.0+cu121 --index-url https://download.pytorch.org/whl/cu121
+torch==2.3.0
 transformers
 accelerate
 bitsandbytes
