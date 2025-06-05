@@ -9,7 +9,7 @@ ENV POETRY_NO_INTERACTION=1 \
 
 WORKDIR /home/base/work
 
-COPY pyproject.toml ./
+COPY pyproject.toml poetry.lock ./
 RUN poetry install --only main
 
 RUN useradd -ms /bin/bash base

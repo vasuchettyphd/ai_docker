@@ -8,7 +8,7 @@ ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_CREATE=false
 
 WORKDIR /app
-COPY pyproject.toml ./
+COPY pyproject.toml poetry.lock ./
 COPY app.py ./
 
 RUN poetry install --only main
