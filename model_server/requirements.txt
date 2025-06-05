@@ -1,3 +1,6 @@
+flask
 torch==2.3.0
 transformers>=4.40.0
-flask
+accelerate
+bitsandbytes
+git+https://github.com/mit-han-lab/llm-awq.git

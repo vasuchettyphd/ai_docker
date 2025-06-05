@@ -8,7 +8,7 @@
 ```bash
 # Clone the repo
 git clone https://github.com/your-username/llama3-docker
-cd llama3-docker 
+cd ai_docker 
 
 # Build and start the containers
 docker compose up --build
@@ -47,18 +47,17 @@ print(res.json()["response"])
 ```
 
 # 🔧 Updating Dependencies
-Dependencies are managed with Poetry using pyproject.toml files.
-
-To update packages:
-
 ```bash
 cd jupyter
-poetry update
+pip install --upgrade -r requirements.txt
+pip freeze > requirements.txt  # After installing new packages
 
 cd ../model_server
-poetry update
+pip install --upgrade -r requirements.txt
+pip freeze > requirements.txt  # After installing new packages
 ```
-⚠️ poetry.lock is intentionally omitted in this setup. Use poetry lock manually to freeze versions if desired.
+
+⚠️ The requirements.txt files are now the single source of truth for dependency versions. Remember to re-export them with pip freeze > requirements.txt after adding or upgrading any package.
 
 # 🧹 Stopping Containers
 ```bash

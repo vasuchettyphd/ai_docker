@@ -1,20 +1,19 @@
-FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:12.1.1-base-ubuntu22.04
 
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y \
-    python3.10 python3-pip git curl build-essential && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN ln -sf /usr/bin/python3.10 /usr/bin/python && python -m pip install --upgrade pip
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3.10 python3-pip python3-venv \
+        build-essential git curl ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir git+https://github.com/mit-han-lab/awq.git
+COPY . .
 
-COPY app.py .
+ENV PYTHONUNBUFFERED=1
 
-EXPOSE 5000
-CMD ["python", "app.py"]
+CMD ["python3", "app.py"]

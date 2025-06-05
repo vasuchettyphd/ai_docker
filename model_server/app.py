@@ -1,30 +1,46 @@
-from awq import AutoAWQForCausalLM
-from transformers import AutoTokenizer
 from flask import Flask, request, jsonify
+from transformers import AutoTokenizer
+from awq import AutoAWQForCausalLM
+import torch
+
+model_path = "TheBloke/deepseek-coder-1.3b-base-AWQ"
+
+tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+model = AutoAWQForCausalLM.from_pretrained(model_path, trust_remote_code=True)
+model = model.to("cuda" if torch.cuda.is_available() else "cpu")
+model.eval()
 
 app = Flask(__name__)
 
-model_path = "TheBloke/deepseek-coder-1.3b-base-AWQ"
-model = AutoAWQForCausalLM.from_quantized(
-    model_path,
-    fuse_layers=True,
-    trust_remote_code=True
-)
-tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-
 @app.route("/generate", methods=["POST"])
 def generate():
-    data = request.get_json()
-    prompt = data.get("prompt", "")
-    if not prompt:
-        return jsonify({"error": "Missing 'prompt' in request body"}), 400
+    try:
+        data = request.json
+        prompt = data.get("prompt", "")
+        max_new_tokens = int(data.get("max_new_tokens", 256))
+        temperature = float(data.get("temperature", 0.7))
+        top_p = float(data.get("top_p", 0.95))
 
-    input_ids = tokenizer(prompt, return_tensors="pt").input_ids.cuda()
-    with torch.no_grad():
-        output_ids = model.generate(input_ids, max_new_tokens=256)
-    output_text = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+        if not prompt:
+            return jsonify({"error": "Prompt is required."}), 400
 
-    return jsonify({"output": output_text})
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(model.device)
+
+        with torch.no_grad():
+            output = model.generate(
+                input_ids=input_ids,
+                max_new_tokens=max_new_tokens,
+                temperature=temperature,
+                top_p=top_p,
+                do_sample=True,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+
+        response_text = tokenizer.decode(output[0], skip_special_tokens=True)
+        return jsonify({"response": response_text})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000) 
