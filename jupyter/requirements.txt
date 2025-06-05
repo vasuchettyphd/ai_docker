@@ -1,8 +1,10 @@
 jupyterlab
 notebook
-requests
+ipykernel
+ipywidgets
+matplotlib
 numpy
 pandas
-scikit-learn
 seaborn
-ipywidgets
+scikit-learn
+requests
