@@ -1,7 +1,7 @@
 services:
   model:
     build: ./model_server
-    container_name: llama3-model
+    container_name: deepseek-model
     ports:
       - "5000:5000"
     deploy:
@@ -10,7 +10,6 @@ services:
           devices:
             - capabilities: [gpu]
     runtime: nvidia
-
   jupyter:
     build: ./jupyter
     container_name: jupyter-client
